@@ -41,8 +41,6 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
 
-    qDebug() <<
-
 
 }
 
