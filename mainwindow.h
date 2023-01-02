@@ -15,6 +15,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    void extracted();
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 

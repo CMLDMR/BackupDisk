@@ -18,7 +18,7 @@ int ReadSector(int numSector,BYTE* buf){
     DWORD bytesRead;
     HANDLE device = NULL;
 
-    device = CreateFile(L"\\\\?\\Volume{6214ca0b-0000-0000-0000-100000000000}\\",    // Drive to open
+    device = CreateFile(L"\\\\?\\Volume{ef4bf01f-48cc-423a-b189-1d1159e71d19}\\",    // Drive to open
                         GENERIC_READ,           // Access mode
                         FILE_SHARE_READ,        // Share Mode
                         NULL,                   // Security Descriptor
@@ -105,10 +105,28 @@ std::vector<std::string> getListOfDrives() {
 
 #define wszDrive L"\\\\?\\Volume{6214ca0b-0000-0000-0000-100000000000}\\"
 
+void MainWindow::extracted() {
+    for (const auto &item : QStorageInfo::mountedVolumes()) {
+        qDebug() << "device" << item.device();
+        qDebug() << "blockSize" << item.blockSize();
+        qDebug() << "bytesAvailable" << item.bytesAvailable();
+        qDebug() << "bytesFree" << item.bytesFree();
+        qDebug() << "bytesTotal" << item.bytesTotal();
+        qDebug() << "displayName" << item.displayName();
+        qDebug() << "fileSystemType" << item.fileSystemType();
+        qDebug() << "name" << item.name();
+        qDebug() << "rootPath" << item.rootPath();
+        qDebug() << "subvolume" << item.subvolume();
+        qDebug() << "isReadOnly" << item.isReadOnly();
+        qDebug() << "isReady" << item.isReady();
+        qDebug() << "isRoot" << item.isRoot();
+        qDebug() << "";
+
+        break;
+    }
+}
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
+    : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
     //    char * drv="\\\\.\\C:";
@@ -130,26 +148,7 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << item.c_str();
     }
 
-
-    for( const auto item : QStorageInfo::mountedVolumes() ){
-        qDebug() <<"device" <<item.device();
-        qDebug() << "blockSize" <<item.blockSize();
-        qDebug() << "bytesAvailable" << item.bytesAvailable();
-        qDebug() << "bytesFree" << item.bytesFree();
-        qDebug() << "bytesTotal" << item.bytesTotal();
-        qDebug() << "displayName" << item.displayName();
-        qDebug() << "fileSystemType" << item.fileSystemType();
-        qDebug() << "name" << item.name();
-        qDebug() << "rootPath" << item.rootPath();
-        qDebug() << "subvolume" << item.subvolume();
-        qDebug() << "isReadOnly" << item.isReadOnly();
-        qDebug() << "isReady" << item.isReady();
-        qDebug() << "isRoot" << item.isRoot();
-        qDebug() << "";
-
-        break;
-    }
-
+    extracted();
 
     DISK_GEOMETRY pdg = { {{0}} }; // disk drive geometry structure
     BOOL bResult = FALSE;      // generic results flag
@@ -179,7 +178,6 @@ MainWindow::MainWindow(QWidget *parent)
     {
         qDebug() <<  ("GetDriveGeometry failed. Error %ld.\n") <<  GetLastError ();
     }
-
 }
 
 MainWindow::~MainWindow()
